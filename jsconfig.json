@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    // 自动联想路径
     "paths": {
       "@/*": ["./src/*"]
     }
