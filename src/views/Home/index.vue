@@ -4,8 +4,8 @@
     </div>
 </template>
 
-<style>
+<style scoped>
     .home{
-        height: 100px;
+        height: 1000px;
     }
 </style>

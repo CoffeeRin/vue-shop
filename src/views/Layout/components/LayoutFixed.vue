@@ -1,6 +1,11 @@
 <!-- 吸顶导航 -->
 <script setup>
 import { useScroll } from '@vueuse/core'
+import { useCategoryStore } from '@/stores/category'
+
+//使用pinia中的数据
+const categoryStore = useCategoryStore()
+
 //基于window滚动
 const { y } = useScroll(window)
 </script>
@@ -14,35 +19,11 @@ const { y } = useScroll(window)
                 <li class="home">
                     <RouterLink to="/">首页</RouterLink>
                 </li>
-                <li>
-                    <RouterLink to="/">居家</RouterLink>
-                </li>
-                <li>
-                    <RouterLink to="/">美食</RouterLink>
-                </li>
-                <li>
-                    <RouterLink to="/">服饰</RouterLink>
-                </li>
-                <li>
-                    <RouterLink to="/">母婴</RouterLink>
-                </li>
-                <li>
-                    <RouterLink to="/">个护</RouterLink>
-                </li>
-                <li>
-                    <RouterLink to="/">严选</RouterLink>
-                </li>
-                <li>
-                    <RouterLink to="/">数码</RouterLink>
-                </li>
-                <li>
-                    <RouterLink to="/">运动</RouterLink>
-                </li>
-                <li>
-                    <RouterLink to="/">杂项</RouterLink>
+                <li class="home" v-for="item in categoryStore.categoryList" :key="item.id">
+                    <RouterLink to="/">{{ item.name }}</RouterLink>
                 </li>
             </ul>
-
+            <!-- 右边 -->
             <div class="right">
                 <RouterLink to="/">品牌</RouterLink>
                 <RouterLink to="/">专题</RouterLink>
@@ -68,7 +49,6 @@ const { y } = useScroll(window)
     opacity: 0;
 
     // 状态二：移除平移 + 完全不透明
-    //&表示父类名，添加时自动加上父类名
     &.show {
         transition: all 0.3s linear;
         transform: none;
