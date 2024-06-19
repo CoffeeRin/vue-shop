@@ -4,7 +4,7 @@ import httpInstance from '@/utils/http'
 //获取banner轮播图数据
 //params = {}表示默认值为对象
 export const getBannerAPI = (params = {}) => {
-  //默认为1，商品为2
+  //默认为1，商品为2。各分类页轮播图相同
   const { distributionSite = '1' } = params
   return httpInstance({
     url: 'home/banner',
