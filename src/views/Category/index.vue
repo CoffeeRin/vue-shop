@@ -1,51 +1,16 @@
 <!-- 各分类页，根据route.params.id判断是哪个分类页 -->
 
 <script setup>
-import { getCategoryAPI } from '@/apis/category'
-import { ref, onMounted } from 'vue'
-import { useRoute, onBeforeRouteUpdate } from 'vue-router' //使用路由
-import { getBannerAPI } from '@/apis/home'
 import GoodItem from '../Home/components/GoodItem.vue'
+import { useBanner } from './composables/useBanner'
+import { useCategory } from './composables/useCategory'
+
+
+//获取banner数据
+const { bannerList } = useBanner()
 
 //获取分类数据
-const categoryData = ref({})
-const route = useRoute() // 获取路由实例,用于获取路由参数
-
-//默认参数为route.params.id
-const getcategoryData = async (id = route.params.id) => {
-  const res = await getCategoryAPI(id) //route.params.id：因为路由用占位符（params传参），所以用route.params.id获取当前路由id
-  categoryData.value = res.result
-  console.log("res", res)
-}
-
-onMounted(() => {
-  getcategoryData()
-})
-
-//目标:路由参数变化时，可以把分类数据接口重新发送getcategoryData
-//to:目标路由对象
-onBeforeRouteUpdate((to) => {
-  console.log('路由变化了')
-  //使用最新的路由参数请求最新的分类数据
-  getcategoryData(to.params.id)
-})
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-
-//获取banner
-const bannerList = ref([])
-
-const getBanner = async () => {
-  const res = await getBannerAPI({
-    distributionSite: '2'
-  })
-  bannerList.value = res.result
-  // console.log(res.result)
-}
-
-onMounted(() => {
-  getBanner()
-})
+const {categoryData} = useCategory()
 </script>
 
 <template>
