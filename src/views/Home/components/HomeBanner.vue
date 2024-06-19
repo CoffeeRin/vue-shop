@@ -1,3 +1,4 @@
+<!-- 轮播图 -->
 <script setup>
 import { getBannerAPI } from '@/apis/home'
 import { ref, onMounted } from 'vue'
