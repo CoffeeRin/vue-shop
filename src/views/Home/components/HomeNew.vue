@@ -31,7 +31,6 @@ onMounted(() => {
       </li>
     </ul>
   </HomePanel>
-
 </template>
 
 
