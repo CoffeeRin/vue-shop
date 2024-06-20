@@ -1,4 +1,4 @@
-// 封装banner轮播图相关代码
+// 封装banner轮播图相关代码,获取一次即可
 import { ref, onMounted } from 'vue'
 import {getBannerAPI} from '@/apis/home'
 
