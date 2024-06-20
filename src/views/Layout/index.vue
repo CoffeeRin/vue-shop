@@ -18,10 +18,11 @@ onMounted(() => categoryStore.getCategory())
   <LayoutFixed />
   <LayoutNav />
   <LayoutHeader />
+  
   <!-- 二级路由出口，如分类页 -->
   <!-- 1.添加key 破坏复用机制 强制销毁重建 -->
   <!-- <RouterView :key="$route.fullPath" /> -->
-  
   <RouterView />
+
   <LayoutFooter />
 </template>
