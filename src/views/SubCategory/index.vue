@@ -1,7 +1,7 @@
 <!-- 二级分类页 -->
 
 <script setup>
-import { getCategoryFilterAPI,getSubCategoryAPI } from '@/apis/category'
+import { getCategoryFilterAPI, getSubCategoryAPI } from '@/apis/category'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import GoodItem from '../Home/components/GoodItem.vue'
@@ -10,7 +10,7 @@ import GoodItem from '../Home/components/GoodItem.vue'
 const categoryData = ref([])
 const route = useRoute() //获取路由实例
 
-const getCategoryData = async () => {
+const getCategoryData = async () => { //只有一个形参，括号内可省略
   const res = await getCategoryFilterAPI(route.params.id)
   categoryData.value = res.result
 }
@@ -21,8 +21,8 @@ const goodList = ref([])
 const reqData = ref({
   categoryId: route.params.id,
   page: 1,
-  pageSize:20,
-  sortField:'publishTime'
+  pageSize: 20,
+  sortField: 'publishTime'
 })
 
 const getGoodList = async () => {
@@ -36,13 +36,27 @@ onMounted(() => {
 })
 
 //tab切换回调
+//注意：虽然重新请求了，但由于接口问题，切换只会改变sortField，并不会切换页面。
 const tabChange = () => {
-  console.log("tabChange",reqData.value.sortField)
+  console.log("tabChange", reqData.value.sortField)
   reqData.value.page = 1
   //sortField变了，重新发送请求
   getGoodList()
 }
-//注意：虽然重新请求了，但由于接口问题，切换只会改变sortField，并不会切换页面。
+
+//无限加载
+const disabled = ref(false)
+const load = async () => {
+  console.log('加载中····');
+  //获取下一页数据
+  reqData.value.page++ //页数+1
+  const res = await getSubCategoryAPI(reqData.value) // 重新请求
+  goodList.value = [...goodList.value, ...res.result.items] //...拓展运算符先把新旧数组拆成一个个元素，再用[]把元素拼接起来
+  // 加载完毕 停止监听
+  if (res.result.items.length === 0) {
+    disabled.value = true
+  }
+}
 </script>
 
 <template>
@@ -65,9 +79,9 @@ const tabChange = () => {
         <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
         <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
       </el-tabs>
-      <div class="body">
+      <div class="body" v-infinite-scroll="load" :infinite-scroll-disabled="disabled">
         <!-- 商品列表 -->
-        <GoodItem v-for="item in goodList" :good="item" :key="item.id"/>
+        <GoodItem v-for="item in goodList" :good="item" :key="item.id" />
       </div>
     </div>
   </div>
