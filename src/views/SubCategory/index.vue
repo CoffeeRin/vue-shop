@@ -34,6 +34,15 @@ onMounted(() => {
   getCategoryData()
   getGoodList()
 })
+
+//tab切换回调
+const tabChange = () => {
+  console.log("tabChange",reqData.value.sortField)
+  reqData.value.page = 1
+  //sortField变了，重新发送请求
+  getGoodList()
+}
+//注意：虽然重新请求了，但由于接口问题，切换只会改变sortField，并不会切换页面。
 </script>
 
 <template>
@@ -48,9 +57,10 @@ onMounted(() => {
         <el-breadcrumb-item>{{ categoryData.name }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <!-- 排序选项 -->
+    <!-- tab排序选项 -->
     <div class="sub-container">
-      <el-tabs>
+      <!--v-model绑定下面标签的name-->
+      <el-tabs v-model="reqData.sortField" @tab-click="tabChange">
         <el-tab-pane label="最新商品" name="publishTime"></el-tab-pane>
         <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
         <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
