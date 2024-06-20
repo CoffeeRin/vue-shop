@@ -1,9 +1,10 @@
 <!-- 二级分类页 -->
 
 <script setup>
-import { getCategoryFilterAPI } from '@/apis/category'
+import { getCategoryFilterAPI,getSubCategoryAPI } from '@/apis/category'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import GoodItem from '../Home/components/GoodItem.vue'
 
 // 获取面包屑导航数据
 const categoryData = ref([])
@@ -14,8 +15,24 @@ const getCategoryData = async () => {
   categoryData.value = res.result
 }
 
+//获取基础列表数据渲染
+const goodList = ref([])
+//请求参数
+const reqData = ref({
+  categoryId: route.params.id,
+  page: 1,
+  pageSize:20,
+  sortField:'publishTime'
+})
+
+const getGoodList = async () => {
+  const res = await getSubCategoryAPI(reqData.value)
+  goodList.value = res.result.items
+}
+
 onMounted(() => {
   getCategoryData()
+  getGoodList()
 })
 </script>
 
@@ -31,6 +48,7 @@ onMounted(() => {
         <el-breadcrumb-item>{{ categoryData.name }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
+    <!-- 排序选项 -->
     <div class="sub-container">
       <el-tabs>
         <el-tab-pane label="最新商品" name="publishTime"></el-tab-pane>
@@ -38,7 +56,8 @@ onMounted(() => {
         <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
       </el-tabs>
       <div class="body">
-        <!-- 商品列表-->
+        <!-- 商品列表 -->
+        <GoodItem v-for="item in goodList" :good="item" :key="item.id"/>
       </div>
     </div>
   </div>
