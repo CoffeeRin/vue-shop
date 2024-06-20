@@ -1,3 +1,4 @@
+<!-- 首页轮播图上的分类页 -->
 <script setup>
 import { useCategoryStore } from '@/stores/category'
 
@@ -144,7 +145,7 @@ const CategoryStrore = useCategoryStore()
         }
       }
 
-      // 关键样式  hover状态下的layer盒子变成block
+      // 关键样式  hover状态下的layer盒子变成block，鼠标悬停显示弹层，&:hover表示鼠标悬停到父元素&上时
       &:hover {
         .layer {
           display: block;

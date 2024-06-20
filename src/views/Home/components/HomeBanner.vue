@@ -20,6 +20,7 @@ onMounted(() => {
 
 <template>
   <div class="home-banner">
+    <!-- 轮播图 -->
     <el-carousel height="500px">
       <el-carousel-item v-for="item in bannerList" :key="item.id">
         <img
