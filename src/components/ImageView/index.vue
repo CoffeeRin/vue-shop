@@ -1,6 +1,6 @@
 <script setup>
 import { useMouseInElement } from '@vueuse/core'
-import { ref,watch } from 'vue'
+import { ref, watch } from 'vue'
 
 // 图片列表
 const imageList = [
@@ -11,7 +11,7 @@ const imageList = [
   "https://yanxuan-item.nosdn.127.net/f881cfe7de9a576aaeea6ee0d1d24823.jpg"
 ]
 
-//通过小图下标切换大图
+//1. 通过小图下标切换大图
 const activeIndex = ref(0) //记录下标值
 
 const handleenter = (i) => {
@@ -25,30 +25,42 @@ const { elementX, elementY, isOutside } = useMouseInElement(target)
 // 3.控制滑块跟随鼠标移动
 const left = ref(0)
 const top = ref(0)
-watch([elementX,elementY],()=>{
+
+const positionX = ref(0)
+const positionY = ref(0)
+watch([elementX, elementY], () => {
   // console.log('鼠标移动了')
+
+  //如果鼠标不在大图上
+  if(isOutside.value) return
+  
   //有效范围内控制滑块距离 
   //横向
-  if(elementX.value > 100 && elementX.value < 300){
+  if (elementX.value > 100 && elementX.value < 300) {
     left.value = elementX.value - 100
   }
   //纵向
-  if(elementY.value > 100 && elementY.value < 300){
+  if (elementY.value > 100 && elementY.value < 300) {
     top.value = elementY.value - 100
   }
   //处理边界
-  if(elementX.value < 100){
+  if (elementX.value < 100) {
     left.value = 0
   }
-  if(elementX.value > 300){
+  if (elementX.value > 300) {
     left.value = 200
   }
-  if(elementY.value < 100){
+  if (elementY.value < 100) {
     top.value = 0
   }
-  if(elementY.value > 300){
+  if (elementY.value > 300) {
     top.value = 200
   }
+
+  //控制大图的显示
+  positionX.value = -left.value * 2
+  positionY.value = -top.value * 2
+
 })
 
 </script>
@@ -60,7 +72,7 @@ watch([elementX,elementY],()=>{
     <div class="middle" ref="target">
       <img :src="imageList[activeIndex]" alt="" />
       <!-- 蒙层小滑块 -->
-      <div class="layer" :style="{ left: `${left}px`, top: `${top}px` }"></div>
+      <div class="layer" v-if="!isOutside" :style="{ left: `${left}px`, top: `${top}px` }"></div>
     </div>
     <!-- 小图列表 -->
     <ul class="small">
@@ -70,13 +82,12 @@ watch([elementX,elementY],()=>{
       </li>
     </ul>
     <!-- 放大镜大图 -->
-    <div class="large" :style="[
-      {
-        backgroundImage: `url(${imageList[0]})`,
-        backgroundPositionX: `0px`,
-        backgroundPositionY: `0px`,
-      },
-    ]" v-show="false"></div>
+     <!-- 样式的动态绑定必须用对象 -->
+    <div class="large" v-if="!isOutside" :style="{
+      backgroundImage: `url(${imageList[0]})`,
+      backgroundPositionX: `${positionX}px`,
+      backgroundPositionY: `${positionY}px`,
+    }"></div>
   </div>
 </template>
 
