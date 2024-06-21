@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue'
+import { useMouseInElement } from '@vueuse/core'
+import { ref,watch } from 'vue'
 
 // 图片列表
 const imageList = [
@@ -16,6 +17,40 @@ const activeIndex = ref(0) //记录下标值
 const handleenter = (i) => {
   activeIndex.value = i
 }
+
+// 2.获取鼠标相对位置
+const target = ref(null) //ref为标记元素，通过ref标记元素
+const { elementX, elementY, isOutside } = useMouseInElement(target)
+
+// 3.控制滑块跟随鼠标移动
+const left = ref(0)
+const top = ref(0)
+watch([elementX,elementY],()=>{
+  // console.log('鼠标移动了')
+  //有效范围内控制滑块距离 
+  //横向
+  if(elementX.value > 100 && elementX.value < 300){
+    left.value = elementX.value - 100
+  }
+  //纵向
+  if(elementY.value > 100 && elementY.value < 300){
+    top.value = elementY.value - 100
+  }
+  //处理边界
+  if(elementX.value < 100){
+    left.value = 0
+  }
+  if(elementX.value > 300){
+    left.value = 200
+  }
+  if(elementY.value < 100){
+    top.value = 0
+  }
+  if(elementY.value > 300){
+    top.value = 200
+  }
+})
+
 </script>
 
 
@@ -25,7 +60,7 @@ const handleenter = (i) => {
     <div class="middle" ref="target">
       <img :src="imageList[activeIndex]" alt="" />
       <!-- 蒙层小滑块 -->
-      <div class="layer" :style="{ left: `0px`, top: `0px` }"></div>
+      <div class="layer" :style="{ left: `${left}px`, top: `${top}px` }"></div>
     </div>
     <!-- 小图列表 -->
     <ul class="small">
