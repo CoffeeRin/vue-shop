@@ -12,8 +12,8 @@ const userStore = useUserStore() //创建store实例对象
 
 //1.准备表单对象
 const form = ref({
-  account: '12056258282',
-  password: 'hm#qd@23!',
+  account: '13111111111',
+  password: '123456',
   agree: false
 })
 
@@ -50,7 +50,7 @@ const login = () => {
   const { account, password } = form.value
 
   //调用实例方法validate
-  formRef.value.validate(async (valid) => {
+  formRef.value.validate((valid) => {
     //valid:所有表单通过校验才为true
     console.log(valid)
     //通过校验？

@@ -1,4 +1,7 @@
 <script setup>
+import { useUserStore } from '@/stores/user'
+
+const userStore = useUserStore() //store实例
 
 </script>
 
@@ -7,8 +10,9 @@
     <div class="container">
       <ul>
         <!-- 多模版渲染，根据登录状态显示不同列表 -->
-        <template v-if="true">
-          <li><a href="javascript:;"><i class="iconfont icon-a-appround4"></i>周杰伦</a></li>
+        <!-- 根据token判断登录状态 -->
+        <template v-if="userStore.userInfo.token">
+          <li><a href="javascript:;"><i class="iconfont icon-a-appround4"></i>{{userStore.userInfo.account}}</a></li>
           <li>
             <el-popconfirm title="确认退出吗?" confirm-button-text="确认" cancel-button-text="取消">
               <template #reference>
