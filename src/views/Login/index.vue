@@ -1,16 +1,19 @@
 <script setup>
 import { ref } from 'vue'
-import { loginAPI } from '@/apis/user'
 import 'element-plus/theme-chalk/el-message.css'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
+
+import { useUserStore } from '@/stores/user'
+
+const userStore = useUserStore() //创建store实例对象
 
 //表单校验（账号名+密码）
 
 //1.准备表单对象
 const form = ref({
-  account: '',
-  password: '',
+  account: '12056258282',
+  password: 'hm#qd@23!',
   agree: false
 })
 
@@ -52,14 +55,13 @@ const login = () => {
     console.log(valid)
     //通过校验？
     if (valid) {
-      //登录跳转
-      const res = await loginAPI({ account, password })
+      //登录跳转，用store的getUserInfo进行登录，登录后会保存用户信息到pinia
+      userStore.getUserInfo({ account, password })
       //若此时登录错误则用拦截器进行统一错误提示
-      console.log(res)
       //1.提示用户登录成功
-      ElMessage({type:'success',message:'登录成功'})
+      ElMessage({ type: 'success', message: '登录成功' })
       //2.跳转首页
-      router.replace({path:'/'})
+      router.replace({ path: '/' })
     }
   })
 }
