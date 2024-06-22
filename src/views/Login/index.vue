@@ -1,5 +1,9 @@
 <script setup>
 import { ref } from 'vue'
+import { loginAPI } from '@/apis/user'
+import 'element-plus/theme-chalk/el-message.css'
+import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
 
 //表单校验（账号名+密码）
 
@@ -20,14 +24,14 @@ const rules = {
     { min: 6, max: 14, message: '密码长度为6~14个字符', trigger: 'blur' }
   ],
   //自定义校验规则，自定义一个校验器validator
-  agree:[
+  agree: [
     {
-      validator:(rule,value,callback)=>{
+      validator: (rule, value, callback) => {
         // console.log(value)
         //自定义校验规则，勾选？
-        if(value){
+        if (value) {
           callback()
-        }else{
+        } else {
           callback(new Error('请勾选协议'))
         }
       }
@@ -35,16 +39,27 @@ const rules = {
   ]
 }
 
-//3.获取form实例进行表单校验
+//3.获取form实例进行表单统一校验
 const formRef = ref(null)
+const router = useRouter() //获取路由器实例
 const login = () => {
+  //获取登录信息
+  const { account, password } = form.value
+
   //调用实例方法validate
-  formRef.value.validate((valid)=>{
+  formRef.value.validate(async (valid) => {
     //valid:所有表单通过校验才为true
     console.log(valid)
     //通过校验？
-    if(valid){
+    if (valid) {
       //登录跳转
+      const res = await loginAPI({ account, password })
+      //若此时登录错误则用拦截器进行统一错误提示
+      console.log(res)
+      //1.提示用户登录成功
+      ElMessage({type:'success',message:'登录成功'})
+      //2.跳转首页
+      router.replace({path:'/'})
     }
   })
 }
@@ -74,10 +89,10 @@ const login = () => {
           <div class="form">
             <el-form ref="formRef" :model="form" :rules="rules" label-position="right" label-width="60px" status-icon>
               <el-form-item label="账户" prop="account">
-                <el-input v-model="form.account"/>
+                <el-input v-model="form.account" />
               </el-form-item>
               <el-form-item label="密码" prop="password">
-                <el-input v-model="form.password"/>
+                <el-input type="password" v-model="form.password" />
               </el-form-item>
               <el-form-item label-width="22px" prop="agree">
                 <el-checkbox v-model="form.agree" size="large">
