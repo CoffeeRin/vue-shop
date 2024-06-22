@@ -2,12 +2,15 @@
 import { getDetail } from '@/apis/detail'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { ElMessage } from 'element-plus';
 import DetailHot from './Components/DetailHot.vue'
+import { useCartStore } from '@/stores/cartStore';
 // import Sku from '@/components/Sku/index.vue'
 // import ImageView from '@/components/ImageView/index.vue'
 
 const goods = ref({})
 const route = useRoute()
+const cartStore = useCartStore()
 
 const getGoods = async () => {
   const res = await getDetail(route.params.id)
@@ -20,8 +23,37 @@ onMounted(() => {
 })
 
 //sku规格被操作时
-const skuChange = (sku)=>{
+let skuObj = {}
+const skuChange = (sku) => {
   console.log(sku)
+  skuObj = sku
+}
+
+//商品数量
+const count = ref(1)
+const countChange = () => {
+  console.log(count.value)
+}
+
+//添加购物车
+const addCart = () => {
+  //可以添加购物车的条件，sku(商品规格)被选时
+  if(skuObj.skuId){
+    //规格已选 触发cartStore相应方法
+    cartStore.addCart({
+      id:goods.value.id,
+      name:goods.value.name,
+      picture:goods.value.mainPictures[0],
+      price:goods.value.price,
+      count:count.value,
+      skuId:skuObj.skuId,
+      attrsText:skuObj.specsText,
+      selected:true
+    })
+  }else{ 
+    //规格未选 提示
+    ElMessage.warning('请选择规格')
+  }
 }
 </script>
 
@@ -50,8 +82,8 @@ const skuChange = (sku)=>{
           <div class="goods-info">
             <div class="media">
               <!-- 图片预览区 -->
-               <!-- 注册全局组件了 -->
-              <ShopImageView :image-list="goods.mainPictures"/>
+              <!-- 注册全局组件了 -->
+              <ShopImageView :image-list="goods.mainPictures" />
 
               <!-- 统计数量 -->
               <ul class="goods-sales">
@@ -101,14 +133,15 @@ const skuChange = (sku)=>{
                 </dl>
               </div>
               <!-- sku组件 -->
-               <!-- 注册为全局组件了 -->
-              <ShopSku :goods="goods" @change="skuChange"/>
+              <!-- 注册为全局组件了 -->
+              <ShopSku :goods="goods" @change="skuChange" />
 
               <!-- 数据组件 -->
+              <el-input-number v-model="count" @change="countChange" />
 
               <!-- 按钮组件 -->
               <div>
-                <el-button size="large" class="btn">
+                <el-button size="large" class="btn" @click="addCart">
                   加入购物车
                 </el-button>
               </div>
@@ -126,8 +159,8 @@ const skuChange = (sku)=>{
                   <!-- 属性 -->
                   <ul class="attrs">
                     <li v-for="item in goods.details.properties" :key="item.value">
-                      <span class="dt">{{item.name}}</span>
-                      <span class="dd">{{item.value}}</span>
+                      <span class="dt">{{ item.name }}</span>
+                      <span class="dd">{{ item.value }}</span>
                     </li>
                   </ul>
                   <!-- 图片 -->
@@ -138,9 +171,9 @@ const skuChange = (sku)=>{
             <!-- 24热榜+专题推荐 -->
             <div class="goods-aside">
               <!-- 24小时 -->
-              <DetailHot :hot-type="1"/>
+              <DetailHot :hot-type="1" />
               <!-- 周热榜 -->
-              <DetailHot :hot-type="2"/>
+              <DetailHot :hot-type="2" />
             </div>
           </div>
         </div>
