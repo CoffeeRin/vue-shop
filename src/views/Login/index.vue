@@ -19,11 +19,11 @@ const rules = {
     { required: true, message: '密码不能为空', trigger: 'blur' },
     { min: 6, max: 14, message: '密码长度为6~14个字符', trigger: 'blur' }
   ],
-  //自定义校验规则
+  //自定义校验规则，自定义一个校验器validator
   agree:[
     {
       validator:(rule,value,callback)=>{
-        console.log(value)
+        // console.log(value)
         //自定义校验规则，勾选？
         if(value){
           callback()
@@ -33,6 +33,20 @@ const rules = {
       }
     }
   ]
+}
+
+//3.获取form实例进行表单校验
+const formRef = ref(null)
+const login = () => {
+  //调用实例方法validate
+  formRef.value.validate((valid)=>{
+    //valid:所有表单通过校验才为true
+    console.log(valid)
+    //通过校验？
+    if(valid){
+      //登录跳转
+    }
+  })
 }
 </script>
 
@@ -58,7 +72,7 @@ const rules = {
         </nav>
         <div class="account-box">
           <div class="form">
-            <el-form :model="form" :rules="rules" label-position="right" label-width="60px" status-icon>
+            <el-form ref="formRef" :model="form" :rules="rules" label-position="right" label-width="60px" status-icon>
               <el-form-item label="账户" prop="account">
                 <el-input v-model="form.account"/>
               </el-form-item>
@@ -70,7 +84,7 @@ const rules = {
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
-              <el-button size="large" class="subBtn">点击登录</el-button>
+              <el-button size="large" class="subBtn" @click="login">点击登录</el-button>
             </el-form>
           </div>
         </div>
