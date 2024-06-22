@@ -6,6 +6,7 @@
   <nav class="app-topnav">
     <div class="container">
       <ul>
+        <!-- 多模版渲染，根据登录状态显示不同列表 -->
         <template v-if="true">
           <li><a href="javascript:;"><i class="iconfont icon-a-appround4"></i>周杰伦</a></li>
           <li>
@@ -19,7 +20,7 @@
           <li><a href="javascript:;">会员中心</a></li>
         </template>
         <template v-else>
-          <li><a href="javascript:;">请先登录</a></li>
+          <li><a href="javascript:;" @click="$router.push('/login')">请先登录</a></li>
           <li><a href="javascript:;">帮助中心</a></li>
           <li><a href="javascript:;">关于我们</a></li>
         </template>
@@ -36,8 +37,8 @@
   ul {
     display: flex;
     height: 53px;
-    justify-content: flex-end;
-    align-items: center;
+    justify-content: flex-end; //末端对齐
+    align-items: center; //垂直方向居中
 
     li {
       a {
