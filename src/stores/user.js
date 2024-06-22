@@ -14,13 +14,17 @@ export const useUserStore = defineStore(
       const res = await loginAPI({ account, password }) //登录后返回的是用户信息
       userInfo.value = res.result
     }
-    //3.以对象的格式把store和action return出去
+    //3.退出时清除用户信息,因为配置过pinia持久化插件，piniaPluginPersistedstate，所以清除pinia的数据会把localStorage的数据也清除
+    const clearUserInfo = () => {
+      userInfo.value = {}
+    }
+    //4.以对象的格式把store和action return出去
     return {
       userInfo,
-      getUserInfo
+      getUserInfo,
+      clearUserInfo
     }
   },
   {
     persist: true, //持久化插件配置项，默认存入localStorage
-  }
-)
+  })
