@@ -1,7 +1,7 @@
 <!-- 吸顶导航 -->
 <script setup>
 import { useScroll } from '@vueuse/core'
-import { useCategoryStore } from '@/stores/category'
+import { useCategoryStore } from '@/stores/categoryStore'
 
 //使用pinia中的数据
 const categoryStore = useCategoryStore()

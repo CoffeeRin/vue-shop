@@ -8,7 +8,7 @@ import 'element-plus/theme-chalk/el-message.css'
 import { ElMessage } from 'element-plus'
 
 //引入pinia(user)
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/userStore'
 
 //创建axios实例
 const httpInstance = axios.create({

@@ -1,6 +1,6 @@
 <!-- 首页轮播图上的分类页 -->
 <script setup>
-import { useCategoryStore } from '@/stores/category'
+import { useCategoryStore } from '@/stores/categoryStore'
 
 const CategoryStrore = useCategoryStore()
 </script>
