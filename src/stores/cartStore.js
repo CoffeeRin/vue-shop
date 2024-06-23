@@ -1,7 +1,7 @@
 // 购物车有关数据
 
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref,computed } from 'vue'
 
 export const useCartStore = defineStore(
   'cart',
@@ -28,13 +28,21 @@ export const useCartStore = defineStore(
       //1.找到要删除项的下标值(findIndex)-splice
       //2.找到数组的过滤方法-filter
       const index = cartList.value.findIndex(item => skuId === item.skuId) //找到要删除的下标
-      cartList.value.splice(index,1)
+      cartList.value.splice(index, 1)
     }
+
+    //计算属性
+    //1.总数
+    const allCart = computed(() => cartList.value.reduce((all, cart) => all + cart.count, 0))
+    //2.总价
+    const allPrice = computed(() => cartList.value.reduce((all, cart) => all + cart.count*cart.price, 0))
 
     return {
       cartList,
       addCart,
-      delCart
+      delCart,
+      allCart,
+      allPrice
     }
   },
   {
