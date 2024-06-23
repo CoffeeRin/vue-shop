@@ -39,11 +39,15 @@ export const useCartStore = defineStore(
     }
 
     //全选功能
-    const allCheck = (selected)=>{
+    const allCheck = (selected) => {
       cartList.value.forEach((item) => item.selected = selected)
     }
 
-    //计算属性,cartList.value.reduce((a,c)=>a+c.count,0),a为累加总数，c为cartList的每一项
+    //计算属性
+    //累加：cartList.value.reduce((a,c)=>a+c.count,0),a为累加总数，c为cartList的每一项
+    //过滤：filter((item) => item.selected)
+    //判断每一项:every((item) => item.selected === true)
+
     //1.总数
     const allCart = computed(() => cartList.value.reduce((all, cart) => all + cart.count, 0))
     //2.总价
@@ -51,6 +55,11 @@ export const useCartStore = defineStore(
 
     //单选框是否全选，根据单选框判断全选框
     const isAll = computed(() => cartList.value.every((item) => item.selected === true))
+
+    //已选择数量
+    const selectedCount = computed(() => cartList.value.filter((item) => item.selected).reduce((all, cart) => all + cart.count, 0))
+    //已选择商品价格合计
+    const selectedPrice = computed(() => cartList.value.filter((item) => item.selected).reduce((all, cart) => all + cart.count * cart.price, 0))
 
     return {
       cartList,
@@ -60,7 +69,9 @@ export const useCartStore = defineStore(
       allCheck,
       allCart,
       allPrice,
-      isAll
+      isAll,
+      selectedCount,
+      selectedPrice
     }
   },
   {
