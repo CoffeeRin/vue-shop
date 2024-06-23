@@ -4,6 +4,7 @@ import { loginAPI } from '@/apis/user'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useCartStore } from './cartStore'
+import { mergeCartAPI } from '@/apis/cart'
 
 export const useUserStore = defineStore(
   'user',
@@ -13,10 +14,20 @@ export const useUserStore = defineStore(
 
     //1.定义管理用户数据的store，token等
     const userInfo = ref({})
-    //2.定义获取接口数据的action函数
+    //2.定义获取接口数据的action函数,登录后
     const getUserInfo = async ({ account, password }) => {
       const res = await loginAPI({ account, password }) //登录后返回的是用户信息
       userInfo.value = res.result
+      //合并购物车
+      await mergeCartAPI(cartStore.cartList.map(item=>{
+        return{
+          skuId:item.skuId,
+          selected:item.selected,
+          count:item.count
+        }
+      }))
+      //更新购物车
+      cartStore.updateNewList()
     }
     //3.退出时清除用户信息,因为配置过pinia持久化插件，piniaPluginPersistedstate，所以清除pinia的数据会把localStorage的数据也清除
     const clearUserInfo = () => {
