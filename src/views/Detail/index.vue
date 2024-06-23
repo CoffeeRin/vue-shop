@@ -39,7 +39,7 @@ const countChange = () => {
 const addCart = () => {
   //可以添加购物车的条件，sku(商品规格)被选时
   if(skuObj.skuId){
-    //规格已选 触发cartStore相应方法
+    //规格已选 触发cartStore相应方法addCart
     cartStore.addCart({
       id:goods.value.id,
       name:goods.value.name,
@@ -50,6 +50,7 @@ const addCart = () => {
       attrsText:skuObj.specsText,
       selected:true
     })
+    ElMessage({type:'success',message:'已添加到购物车'})
   }else{ 
     //规格未选 提示
     ElMessage.warning('请选择规格')
