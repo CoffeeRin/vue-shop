@@ -47,18 +47,23 @@ export const useCartStore = defineStore(
     //删除购物车操作
     const delCart = async (skuId) => {
       if (isLogin.value) {
-        //登录后删除购物车
+        //已登录删除购物车
         await delCartAPI([skuId]) //接口删除购物车
         // const res = await findNewCartListAPI() //接口获取获取购物车列表
         // cartList.value = res.result //接口购物车数据覆盖本地数据
         updateNewList()
       } else {
-        //本地删除思路：
+        //未登录本地删除思路：
         //1.找到要删除项的下标值(findIndex)-splice
         //2.找到数组的过滤方法-filter
         const index = cartList.value.findIndex(item => skuId === item.skuId) //找到要删除的下标
         cartList.value.splice(index, 1)
       }
+    }
+
+    //清除本地购物车
+    const clearCart = ()=>{
+      cartList.value = []
     }
 
     //单选功能
@@ -97,6 +102,7 @@ export const useCartStore = defineStore(
       delCart,
       singeCheck,
       allCheck,
+      clearCart,
       allCart,
       allPrice,
       isAll,
