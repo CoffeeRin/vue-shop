@@ -31,12 +31,6 @@ export const useCartStore = defineStore(
       cartList.value.splice(index, 1)
     }
 
-    //计算属性,cartList.value.reduce((a,c)=>a+c.count,0),a为累加总数，c为cartList的每一项
-    //1.总数
-    const allCart = computed(() => cartList.value.reduce((all, cart) => all + cart.count, 0))
-    //2.总价
-    const allPrice = computed(() => cartList.value.reduce((all, cart) => all + cart.count * cart.price, 0))
-
     //单选功能
     const singeCheck = (skuId, selected) => {
       //通过skuId找到要修改的数据
@@ -44,13 +38,29 @@ export const useCartStore = defineStore(
       item.selected = selected
     }
 
+    //全选功能
+    const allCheck = (selected)=>{
+      cartList.value.forEach((item) => item.selected = selected)
+    }
+
+    //计算属性,cartList.value.reduce((a,c)=>a+c.count,0),a为累加总数，c为cartList的每一项
+    //1.总数
+    const allCart = computed(() => cartList.value.reduce((all, cart) => all + cart.count, 0))
+    //2.总价
+    const allPrice = computed(() => cartList.value.reduce((all, cart) => all + cart.count * cart.price, 0))
+
+    //单选框是否全选，根据单选框判断全选框
+    const isAll = computed(() => cartList.value.every((item) => item.selected === true))
+
     return {
       cartList,
       addCart,
       delCart,
+      singeCheck,
+      allCheck,
       allCart,
       allPrice,
-      singeCheck
+      isAll
     }
   },
   {
