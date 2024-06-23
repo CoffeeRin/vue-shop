@@ -2,6 +2,13 @@
 import { useCartStore } from '@/stores/cartStore';
 
 const cartStore = useCartStore()
+
+//单选回调
+const singeCheck = (i, selected) => {
+  // console.log(i, selected)
+  //store cartList 数组 无法知道要修改谁的选中状态
+  cartStore.singeCheck(i.skuId, selected)
+}
 </script>
 
 <template>
@@ -25,7 +32,8 @@ const cartStore = useCartStore()
           <tbody>
             <tr v-for="i in cartStore.cartList" :key="i.id">
               <td>
-                <el-checkbox />
+                <!-- 单选框 -->
+                <el-checkbox :model-value="i.selected" @change="(selected) => singeCheck(i, selected)" />
               </td>
               <td>
                 <div class="goods">
@@ -72,7 +80,7 @@ const cartStore = useCartStore()
       <!-- 操作栏 -->
       <div class="action">
         <div class="batch">
-          共 {{cartStore.allCart}} 件商品，已选择 2 件，商品合计：
+          共 {{ cartStore.allCart }} 件商品，已选择 2 件，商品合计：
           <span class="red">¥ {{ cartStore.allPrice }} </span>
         </div>
         <div class="total">

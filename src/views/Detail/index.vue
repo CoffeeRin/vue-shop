@@ -8,10 +8,11 @@ import { useCartStore } from '@/stores/cartStore';
 // import Sku from '@/components/Sku/index.vue'
 // import ImageView from '@/components/ImageView/index.vue'
 
-const goods = ref({})
-const route = useRoute()
-const cartStore = useCartStore()
+const goods = ref({}) //当前商品数据
+const route = useRoute() //路由实例
+const cartStore = useCartStore() //商品store实例，用于保存加入购物车的商品数据
 
+//接口获得商品数据
 const getGoods = async () => {
   const res = await getDetail(route.params.id)
   goods.value = res.result

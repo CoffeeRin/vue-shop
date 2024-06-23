@@ -1,7 +1,7 @@
 // 购物车有关数据
 
 import { defineStore } from 'pinia'
-import { ref,computed } from 'vue'
+import { ref, computed } from 'vue'
 
 export const useCartStore = defineStore(
   'cart',
@@ -35,14 +35,22 @@ export const useCartStore = defineStore(
     //1.总数
     const allCart = computed(() => cartList.value.reduce((all, cart) => all + cart.count, 0))
     //2.总价
-    const allPrice = computed(() => cartList.value.reduce((all, cart) => all + cart.count*cart.price, 0))
+    const allPrice = computed(() => cartList.value.reduce((all, cart) => all + cart.count * cart.price, 0))
+
+    //单选功能
+    const singeCheck = (skuId, selected) => {
+      //通过skuId找到要修改的数据
+      const item = cartList.value.find((item) => item.skuId === skuId)
+      item.selected = selected
+    }
 
     return {
       cartList,
       addCart,
       delCart,
       allCart,
-      allPrice
+      allPrice,
+      singeCheck
     }
   },
   {
