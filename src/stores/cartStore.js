@@ -31,7 +31,7 @@ export const useCartStore = defineStore(
       cartList.value.splice(index, 1)
     }
 
-    //计算属性
+    //计算属性,cartList.value.reduce((a,c)=>a+c.count,0),a为累加总数，c为cartList的每一项
     //1.总数
     const allCart = computed(() => cartList.value.reduce((all, cart) => all + cart.count, 0))
     //2.总价
