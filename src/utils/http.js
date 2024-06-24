@@ -13,7 +13,7 @@ import { useUserStore } from '@/stores/userStore'
 //创建axios实例
 const httpInstance = axios.create({
   baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net',
-  timeout: 5000
+  timeout: 6000
 })
 
 //拦截器，e代表error
