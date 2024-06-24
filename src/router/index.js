@@ -1,9 +1,12 @@
 //createRouter:创建路由实例
 //createWebHistory：创建路由为历史模式
 
+//一级路由
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '@/views/Login/index.vue'
 import Layout from '@/views/Layout/index.vue'
+
+//二级路由
 import Home from '@/views/Home/index.vue'
 import Category from '@/views/Category/index.vue'
 import SubCategory from '@/views/SubCategory/index.vue'
@@ -12,6 +15,11 @@ import CartList from '@/views/CartList/index.vue'
 import CheckOut from '@/views/CheckOut/index.vue'
 import Pay from '@/views/Pay/index.vue'
 import PayBack from '@/views/Pay/PayBack.vue'
+import Member from '@/views/Member/index.vue'
+
+//三级路由
+import UserInfo from '@/views/Member/components/UserInfo.vue'
+import UserOrder from '@/views/Member/components/UserOrder.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +59,20 @@ const router = createRouter({
         {
           path: 'packcallback',
           component: PayBack
+        },
+        {
+          path:'member',
+          component:Member,
+          children:[
+            {
+              path:'user',
+              component:UserInfo
+            },
+            {
+              path:'order',
+              component:UserOrder
+            }
+          ]
         }
       ]
     },
