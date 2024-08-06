@@ -5,9 +5,7 @@
 <template>
   <!-- 一级路由出口组件 -->
   <RouterView />
-  <div class="test">
-    test scss
-  </div>
+  
 </template>
 
 <!-- 使用scss才能用共享的样式文件自动导入 -->

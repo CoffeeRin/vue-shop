@@ -119,7 +119,7 @@ const login = () => {
           <a href="javascript:;">搜索推荐</a>
           <a href="javascript:;">友情链接</a>
         </p>
-        <p>CopyRight &copy; 小兔鲜儿</p>
+        <p>CopyRight &copy; </p>
       </div>
     </footer>
   </div>
@@ -144,7 +144,7 @@ const login = () => {
       height: 132px;
       width: 100%;
       text-indent: -9999px;
-      background: url("@/assets/images/logo.png") no-repeat center 18px / contain;
+      background: url("@/assets/images/logo1.png") no-repeat center 18px / contain;
     }
   }
 

@@ -25,7 +25,7 @@ httpInstance.interceptors.request.use(config => {
   //2.按照后端的要求拼接token数据
   const token = userStore.userInfo.token
   if (token) {
-    config.headers.Authorization = `Bearer ${token}` //请求的congfig拼接token到header上
+    config.headers.Authorization = `Bearer ${token}` //请求的config拼接token到header上
   }
   return config
 }, e => { return Promise.reject(e) })

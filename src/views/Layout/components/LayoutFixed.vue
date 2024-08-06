@@ -49,6 +49,7 @@ const { y } = useScroll(window)
   opacity: 0;
 
   // 状态二：移除平移 + 完全不透明
+  // 有&类且有show类的情况
   &.show {
     transition: all 0.3s linear;
     transform: none;
@@ -63,7 +64,7 @@ const { y } = useScroll(window)
   .logo {
     width: 200px;
     height: 80px;
-    background: url("@/assets/images/logo.png") no-repeat right 2px;
+    background: url("@/assets/images/logo1.png") no-repeat right 2px;
     background-size: 160px auto;
   }
 
